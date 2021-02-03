@@ -60,6 +60,7 @@ const login = async (req: Request, res: Response) => {
     const token = jwt.sign({ username }, process.env.JWT_SECRET);
 
     // sets headers when response is sent back
+    // adds token to cookie
     res.set(
       'Set-Cookie',
       cookie.serialize('token', token, {
@@ -72,7 +73,10 @@ const login = async (req: Request, res: Response) => {
     );
 
     return res.json(user);
-  } catch (error) {}
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Something went wrong.' });
+  }
 };
 
 const me = (_: Request, res: Response) => {
@@ -80,6 +84,7 @@ const me = (_: Request, res: Response) => {
 };
 
 const logout = async (_: Request, res: Response) => {
+  // removes token stored in cookie
   res.set(
     'Set-Cookie',
     cookie.serialize('token', '', {
