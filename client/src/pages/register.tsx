@@ -9,7 +9,7 @@ export default function Register() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div
-        className="w-40 h-screen bg-center bg-cover"
+        className="h-screen bg-center bg-cover w-36"
         style={{ backgroundImage: "url('/images/karsten-winegeart.jpg')" }}
       ></div>
       <div className="flex flex-col justify-center pl-6">
@@ -57,7 +57,10 @@ export default function Register() {
           <small>
             Already a Readiter?
             <Link href="/login">
-              <a href="Log In" className="ml-1 text-blue-500 uppercase">
+              <a
+                href="Log In"
+                className="ml-1 font-medium text-blue-500 uppercase"
+              >
                 Log In
               </a>
             </Link>
