@@ -7,7 +7,9 @@ import cookie from 'cookie';
 import User from '../entities/User';
 import auth from '../middleware/auth';
 
-// puts proper error messages in array of objects to be displayed when triggered
+// Returns an array of ValidationError objects from 'class-validator'
+// This will give dynamic error messages based upon what triggered the error.
+// This is then shown to the user when they trigger the error on register or login
 const mapErrors = (errors: Object[]) => {
   return errors.reduce((prev: any, err: any) => {
     prev[err.property] = Object.entries(err.constraints)[0][1];
@@ -19,7 +21,7 @@ const register = async (req: Request, res: Response) => {
   const { email, username, password } = req.body;
 
   try {
-    // TODO: Validate data
+    // Validate data
     let errors: any = {};
     const emailUser = await User.findOne({ email });
     const usernameUser = await User.findOne({ username });
@@ -27,6 +29,7 @@ const register = async (req: Request, res: Response) => {
     if (emailUser) errors.email = 'Email is already taken';
     if (usernameUser) errors.username = 'Username is already taken';
 
+    // checks to see if username or email was already taken
     if (Object.keys(errors).length > 0) {
       return res.status(400).json(errors);
     }

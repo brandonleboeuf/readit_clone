@@ -20,8 +20,9 @@ export default function Register() {
     if (!agreement) {
       setErrors({
         ...errors,
-        agreement: 'You must agree to receiving out email!!!!',
+        agreement: 'You must agree to receiving our email!!!!',
       });
+      return;
     }
 
     try {
@@ -100,12 +101,7 @@ export default function Register() {
           <small>
             Already a Readiter?
             <Link href="/login">
-              <a
-                href="Log In"
-                className="ml-1 font-medium text-blue-500 uppercase"
-              >
-                Log In
-              </a>
+              <a className="ml-1 font-medium text-blue-500 uppercase">Log In</a>
             </Link>
           </small>
         </div>

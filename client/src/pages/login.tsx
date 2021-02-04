@@ -72,11 +72,8 @@ export default function Login() {
           <small>
             New to Readit?
             <Link href="/register">
-              <a
-                href="Sign Up!"
-                className="ml-1 font-medium text-blue-500 uppercase"
-              >
-                Log In
+              <a className="ml-1 font-medium text-blue-500 uppercase">
+                Sign Up
               </a>
             </Link>
           </small>
