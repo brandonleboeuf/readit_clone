@@ -17,14 +17,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      await Axios.post(
-        '/auth/login',
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      );
+      await Axios.post('/auth/login', {
+        username,
+        password,
+      });
 
       router.push('/');
     } catch (err) {
