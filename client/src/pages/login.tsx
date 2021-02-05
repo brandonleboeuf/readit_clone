@@ -65,14 +65,14 @@ export default function Login() {
               error={errors.password}
               setValue={setPassword}
             />
-            <button className="w-full py-2 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded">
+            <button className="w-full py-2 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded hover:bg-blue-400">
               Log In
             </button>
           </form>
           <small>
             New to Readit?
             <Link href="/register">
-              <a className="ml-1 font-medium text-blue-500 uppercase">
+              <a className="ml-1 font-medium text-blue-500 uppercase hover:text-blue-400">
                 Sign Up
               </a>
             </Link>
