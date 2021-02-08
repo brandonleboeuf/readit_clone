@@ -17,11 +17,14 @@ export default function Register() {
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
+
+    // If the "agree to email" box is not checked, blocks user from registering
     if (!agreement) {
       setErrors({
         ...errors,
         agreement: 'You must agree to receiving our email!!!!',
       });
+
       return;
     }
 
