@@ -1,9 +1,10 @@
+import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+// import { GetServerSideProps } from 'next';
 
 // types
 import { Post } from '../types';
@@ -97,3 +98,38 @@ export default function Home() {
     </div>
   );
 }
+
+////////////////////////////////////////////
+// To implement either of the bellow versions of getServerSideProps
+// remove the useState and useEffect form the above component
+// and add {data} as the argument
+
+/* next.js default getServerSideProps */
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const res = await fetch(`https://.../data`);
+//   const data = await res.json();
+
+//   if (!data) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: {},
+//   };
+// };
+
+/* or getServerSideProps using axios */
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   try {
+//     const res = await Axios.get('/posts');
+
+//     return { props: { posts: res.data } };
+//   } catch (error) {
+//     return { props: { error: 'Something went wrong' } };
+//   }
+// };
