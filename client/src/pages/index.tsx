@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Head from 'next/head';
+import useSWR from 'swr';
 // import { GetServerSideProps } from 'next';
 
 // types
@@ -9,30 +10,31 @@ import { Post } from '../types';
 import PostCard from '../components/PostCard';
 
 export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const { data: posts } = useSWR('/posts');
+  // WITHOUT USING SWR
+  // const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
-    Axios.get('/posts')
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   Axios.get('/posts')
+  //     .then((res) => setPosts(res.data))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   return (
-    <div className="pt-12">
+    <>
       <Head>
         <title>Readit: home to the net</title>
       </Head>
       <div className="container flex flex-col items-center pt-4">
-        <h1>Recent Posts</h1>
         {/* POST FEED  */}
         <div className="w-160">
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <PostCard post={post} key={post.identifier} />
           ))}
         </div>
         {/* SIDEBAR */}
       </div>
-    </div>
+    </>
   );
 }
 
