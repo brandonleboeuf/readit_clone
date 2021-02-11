@@ -5,42 +5,57 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
-} from 'typeorm';
+} from 'typeorm'
 
-import Entity from './Entity';
-import User from './User';
-import Post from './Post';
+import Entity from './Entity'
+import User from './User'
+import Post from './Post'
+import { Expose } from 'class-transformer'
 
 @TOEntity('subs')
 export default class Sub extends Entity {
   constructor(sub: Partial<Sub>) {
-    super();
-    Object.assign(this, sub);
+    super()
+    Object.assign(this, sub)
   }
 
   @Index()
   @Column({ unique: true })
-  name: string;
+  name: string
 
   @Column()
-  title: string;
+  title: string
 
   @Column({ type: 'text', nullable: true })
-  description: string;
+  description: string
 
   @Column({ nullable: true })
-  imageUrn: string; // urn = unique resource name
+  imageUrn: string // urn = unique resource name
 
   @Column({ nullable: true })
-  bannerUrn: string;
+  bannerUrn: string
 
   @Column()
-  username: string;
+  username: string
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  user: User;
+  user: User
 
   @OneToMany(() => Post, (post) => post.sub)
-  posts: Post[];
+  posts: Post[]
+
+  @Expose()
+  get imageUrl(): string {
+    return this.imageUrn
+      ? `${process.env.APP_URL}/images/${this.imageUrn}`
+      : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+  }
+
+  @Expose()
+  get bannerUrl(): string | undefined {
+    return this.bannerUrn
+      ? `${process.env.APP_URL}/images/${this.bannerUrn}`
+      : undefined
+  }
 }
