@@ -9,6 +9,7 @@ import classNames from 'classnames'
 import { Sub } from '../../types'
 import { useAuthState } from '../../context/auth'
 import Axios from 'axios'
+import Sidebar from '../../components/Sidebar'
 
 export default function SubPage() {
   // Local state
@@ -132,7 +133,8 @@ export default function SubPage() {
           </div>
           {/* Posts & Sidebar */}
           <div className="container flex pt-4">
-            {sub && <div className="w-160">{postsMarkup}</div>}
+            <div className="w-160">{postsMarkup}</div>
+            <Sidebar sub={sub} />
           </div>
         </>
       )}

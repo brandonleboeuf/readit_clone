@@ -1,41 +1,45 @@
-import { FormEvent, useState } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Link from 'next/link';
-import Axios from 'axios';
+import { FormEvent, useState } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import Link from 'next/link'
+import Axios from 'axios'
 
-import { useAuthDispatch, useAuthState } from '../context/auth';
+import { useAuthDispatch, useAuthState } from '../context/auth'
 
-import InputGroup from '../components/InputGroup';
+import InputGroup from '../components/InputGroup'
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<any>({});
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState<any>({})
 
-  const dispatch = useAuthDispatch();
-  const { authenticated } = useAuthState();
+  const dispatch = useAuthDispatch()
+  const { authenticated } = useAuthState()
 
-  const router = useRouter();
-  if (authenticated) router.push('/');
+  const router = useRouter()
+  if (authenticated) router.push('/')
 
   const submitForm = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       const res = await Axios.post('/auth/login', {
         username,
         password,
-      });
+      })
 
-      dispatch('LOGIN', res.data);
+      dispatch('LOGIN', res.data)
 
-      router.push('/');
+      // to go to home page
+      // router.push('/');
+
+      // to go back to previous page
+      router.back()
     } catch (err) {
-      console.log(err);
-      setErrors(err.response.data);
+      console.log(err)
+      setErrors(err.response.data)
     }
-  };
+  }
 
   return (
     <div className="flex bg-white">
@@ -84,5 +88,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  );
+  )
 }
