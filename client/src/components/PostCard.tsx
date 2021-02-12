@@ -1,23 +1,15 @@
-import Link from 'next/link';
-import dayjs from 'dayjs';
-import classNames from 'classnames';
+import Link from 'next/link'
+import dayjs from 'dayjs'
+import classNames from 'classnames'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import Axios from 'axios'
 
-import { Post } from '../types';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import Axios from 'axios';
+import { Post } from '../types'
+import ActionButton from './ActionButton'
 
-dayjs.extend(relativeTime);
-
-const ActionButton = ({ children }) => {
-  return (
-    <div className="px-1 py-1 mr-1 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200">
-      {children}
-    </div>
-  );
-};
-
+dayjs.extend(relativeTime)
 interface PostCardProps {
-  post: Post;
+  post: Post
 }
 
 export default function PostCard({
@@ -35,18 +27,18 @@ export default function PostCard({
     username,
   },
 }: PostCardProps) {
-  const vote = async (value) => {
+  const vote = async (value: number) => {
     try {
       const res = await Axios.post('/misc/vote', {
         identifier,
         slug,
         value,
-      });
-      console.log(res.data);
+      })
+      console.log(res.data)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   return (
     <div key={identifier} className="flex mb-4 bg-white rounded">
@@ -117,20 +109,16 @@ export default function PostCard({
               </ActionButton>
             </a>
           </Link>
-          <a>
-            <ActionButton>
-              <i className="mr-1 fas fa-share fa-xs"></i>
-              <span className="font-bold">share</span>
-            </ActionButton>
-          </a>
-          <a>
-            <ActionButton>
-              <i className="mr-1 fas fa-bookmark fa-xs"></i>
-              <span className="font-bold">save</span>
-            </ActionButton>
-          </a>
+          <ActionButton>
+            <i className="mr-1 fas fa-share fa-xs"></i>
+            <span className="font-bold">share</span>
+          </ActionButton>
+          <ActionButton>
+            <i className="mr-1 fas fa-bookmark fa-xs"></i>
+            <span className="font-bold">save</span>
+          </ActionButton>
         </div>
       </div>
     </div>
-  );
+  )
 }
