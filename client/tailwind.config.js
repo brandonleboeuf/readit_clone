@@ -27,7 +27,10 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['disabled'],
+      borderColor: ['disabled'],
+    },
   },
   plugins: [
     function ({ addComponents }) {
@@ -40,7 +43,7 @@ module.exports = {
           '@screen md': { maxWidth: '768px' },
           '@screen lg': { maxWidth: '975px' },
         },
-      });
+      })
     },
   ],
-};
+}

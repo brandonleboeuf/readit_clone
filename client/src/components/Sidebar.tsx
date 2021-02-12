@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 
 import { Sub } from '../types'
@@ -6,22 +6,29 @@ import { useAuthState } from '../context/auth'
 import Link from 'next/link'
 
 export default function Sidebar({ sub }: { sub: Sub }) {
+  // TODO: make this dynamic
+  // hardcoded random user values
+  const [USERS, setUSERS] = useState((Math.random() * 10).toFixed(1))
+  const [totalUSERS, setTotalUSERS] = useState(
+    (Math.random() * 1000).toFixed(0)
+  )
+
   const { authenticated } = useAuthState()
   return (
     <div className="ml-6 w-80">
       <div className="bg-white rounded">
-        <div className="p-3 bg-blue-500 rountet-t">
+        <div className="p-3 bg-blue-500 rounded-t">
           <p className="font-semibold text-white">About Community</p>
         </div>
         <div className="p-3">
           <p className="mb-3 text-md">{sub.description}</p>
           <div className="flex mb-3 text-sm font-medium">
             <div className="w-1/2">
-              <p>{(Math.random() * 10).toFixed(1)}k</p>
+              <p>{USERS}k</p>
               <p>members</p>
             </div>
             <div className="w-1/2">
-              <p>{(Math.random() * 1000).toFixed(0)}</p>
+              <p>{totalUSERS}</p>
               <p>Online</p>
             </div>
           </div>
