@@ -39,7 +39,7 @@ export default function PostPage({}) {
   if (error) router.push('/')
 
   const vote = async (value: number, comment?: Comment) => {
-    // If not loggged in, send to log in page
+    // If not logged in, send to log in page
     if (!authenticated) router.push('/login')
 
     // if vote is the same as current vote, reset vote
@@ -84,6 +84,15 @@ export default function PostPage({}) {
     if (user.username !== post.username) return
     await Axios.delete(`/posts/${post.identifier}`)
     router.push('/')
+  }
+  const deleteComment = async (comment: Comment) => {
+    console.log(comment.identifier)
+    if (!authenticated) return
+    if (user.username !== comment.username) return
+    await Axios.delete(
+      `/posts/${post.identifier}/${post.slug}/comments/${comment.identifier}`
+    )
+    revalidate()
   }
 
   return (
@@ -286,6 +295,17 @@ export default function PostPage({}) {
                       </p>
                       <p>{comment.body}</p>
                     </div>
+                    {user.username === comment.username && (
+                      <div
+                        onClick={() => deleteComment(comment)}
+                        // style={{ padding: '2px 0 0 0', margin: 0 }}
+                      >
+                        <ActionButton>
+                          <i className="fas fa-trash fa-xs"></i>
+                          {/* <span className="font-bold">delete</span> */}
+                        </ActionButton>
+                      </div>
+                    )}
                   </div>
                 ))}
               </>

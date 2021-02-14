@@ -140,12 +140,25 @@ const deletePost = async (req: Request, res: Response) => {
   }
 }
 
+const deleteComment = async (req: Request, res: Response) => {
+  const postId = req.params
+
+  try {
+    Comment.delete({ identifier: postId.id })
+
+    return res.status(202).json({ success: 'Comment deleted' })
+  } catch (error) {
+    return res.status(404).json({ error: 'Comment not found' })
+  }
+}
+
 const router = Router()
 
 router.post('/', user, auth, createPost)
 router.get('/', user, getPosts)
 router.get('/:identifier/:slug', user, getPost)
 router.delete('/:identifier/', user, auth, deletePost)
+router.delete('/:identifier/:slug/comments/:id', deleteComment)
 router.post('/:identifier/:slug/comments', user, auth, commentOnPost)
 router.get('/:identifier/:slug/comments', user, getPostComments)
 
