@@ -79,6 +79,13 @@ export default function PostPage({}) {
     }
   }
 
+  const deletePost = async () => {
+    if (!authenticated) return
+    if (user.username !== post.username) return
+    await Axios.delete(`/posts/${post.identifier}`)
+    router.push('/')
+  }
+
   return (
     <>
       <Head>
@@ -175,6 +182,14 @@ export default function PostPage({}) {
                         <i className="mr-1 fas fa-bookmark fa-xs"></i>
                         <span className="font-bold">save</span>
                       </ActionButton>
+                      {user.username === post.username && (
+                        <div onClick={deletePost}>
+                          <ActionButton>
+                            <i className="mr-1 fas fa-trash fa-xs"></i>
+                            <span className="font-bold">delete</span>
+                          </ActionButton>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

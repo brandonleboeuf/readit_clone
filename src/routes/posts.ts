@@ -1,4 +1,6 @@
 import { Router, Request, Response } from 'express'
+// import { getConnection } from 'typeorm'
+
 import Comment from '../entities/Comment'
 import Post from '../entities/Post'
 import Sub from '../entities/Sub'
@@ -112,11 +114,38 @@ const getPostComments = async (req: Request, res: Response) => {
   }
 }
 
+const deletePost = async (req: Request, res: Response) => {
+  const { identifier } = req.params
+
+  try {
+    const post = await Post.findOneOrFail({ identifier })
+
+    // finds all comments related to post
+    const comments = await Comment.find({
+      where: { post },
+    })
+
+    // deletes all comments
+    if (comments) {
+      comments.forEach((comment) =>
+        Comment.delete({ identifier: comment.identifier })
+      )
+    }
+    // deletes post
+    await Post.delete({ identifier: identifier })
+
+    return res.status(202).json({ success: 'Post deleted' })
+  } catch (error) {
+    return res.status(404).json({ error: 'Post not found' })
+  }
+}
+
 const router = Router()
 
 router.post('/', user, auth, createPost)
 router.get('/', user, getPosts)
 router.get('/:identifier/:slug', user, getPost)
+router.delete('/:identifier/', user, auth, deletePost)
 router.post('/:identifier/:slug/comments', user, auth, commentOnPost)
 router.get('/:identifier/:slug/comments', user, getPostComments)
 

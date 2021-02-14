@@ -6,70 +6,69 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
-} from 'typeorm';
-import { Exclude, Expose } from 'class-transformer';
+} from 'typeorm'
+import { Exclude, Expose } from 'class-transformer'
 
-import { makeId, slugify } from '../util/helpers';
+import { makeId, slugify } from '../util/helpers'
 
-import Entity from './Entity';
-import User from './User';
-import Sub from './Sub';
-import Comment from './Comment';
-import Vote from './Vote';
+import Entity from './Entity'
+import User from './User'
+import Sub from './Sub'
+import Comment from './Comment'
+import Vote from './Vote'
 
 @TOEntity('posts')
 export default class Post extends Entity {
   constructor(post: Partial<Post>) {
-    super();
-    Object.assign(this, post);
+    super()
+    Object.assign(this, post)
   }
 
   @Index()
   @Column()
-  identifier: string; // 7 Character Id
+  identifier: string // 7 Character Id
 
   @Column()
-  title: string;
+  title: string
 
   @Index()
   @Column()
-  slug: string;
+  slug: string
 
   @Column({ nullable: true, type: 'text' })
-  body: string;
+  body: string
 
   @Column()
-  subName: string;
+  subName: string
 
   @Column()
-  username: string;
+  username: string
 
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  user: User;
+  user: User
 
   @ManyToOne(() => Sub, (sub) => sub.posts)
   @JoinColumn({ name: 'subName', referencedColumnName: 'name' })
-  sub: Sub;
+  sub: Sub
+
+  @OneToMany(() => Comment, (comment) => comment.post, { onDelete: 'CASCADE' })
+  comments: Comment[]
 
   @Exclude()
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
-
-  @Exclude()
-  @OneToMany(() => Vote, (vote) => vote.post)
-  votes: Vote[];
+  @OneToMany(() => Vote, (vote) => vote.post, { onDelete: 'CASCADE' })
+  votes: Vote[]
 
   @Expose() get url(): string {
-    return `/r/${this.subName}/${this.identifier}/${this.slug}`;
+    return `/r/${this.subName}/${this.identifier}/${this.slug}`
   }
 
   @Expose() get commentCount(): number {
-    return this.comments?.length;
+    return this.comments?.length
   }
 
   @Expose() get voteScore(): number {
-    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
+    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0)
   }
 
   // The above is equivalent to
@@ -79,15 +78,15 @@ export default class Post extends Entity {
   //   this.url = `/r/${this.subName}/${this.identifier}/${this.slug}`
   // }
 
-  protected userVote: number;
+  protected userVote: number
   setUserVote(user: User) {
-    const index = this.votes?.findIndex((v) => v.username === user.username);
-    this.userVote = index > -1 ? this.votes[index].value : 0;
+    const index = this.votes?.findIndex((v) => v.username === user.username)
+    this.userVote = index > -1 ? this.votes[index].value : 0
   }
 
   @BeforeInsert()
   makeIdAndSlug() {
-    this.identifier = makeId(7);
-    this.slug = slugify(this.title);
+    this.identifier = makeId(7)
+    this.slug = slugify(this.title)
   }
 }

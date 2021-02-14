@@ -33,14 +33,14 @@ export default class Comment extends Entity {
   @Column()
   username: string
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User
 
   @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
   post: Post
 
-  @OneToMany(() => Vote, (vote) => vote.comment)
+  @OneToMany(() => Vote, (vote) => vote.comment, { onDelete: 'CASCADE' })
   votes: Vote[]
 
   @Expose() get voteScore(): number {

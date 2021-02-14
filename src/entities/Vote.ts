@@ -1,30 +1,30 @@
-import { Entity as TOEntity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity as TOEntity, Column, ManyToOne, JoinColumn } from 'typeorm'
 
-import Entity from './Entity';
-import Post from './Post';
-import User from './User';
-import Comment from './Comment';
+import Entity from './Entity'
+import Post from './Post'
+import User from './User'
+import Comment from './Comment'
 
 @TOEntity('votes')
 export default class Vote extends Entity {
   constructor(vote: Partial<Vote>) {
-    super();
-    Object.assign(this, vote);
+    super()
+    Object.assign(this, vote)
   }
 
   @Column()
-  value: number;
+  value: number
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
-  user: User;
+  user: User
 
   @Column()
-  username: string;
+  username: string
 
-  @ManyToOne(() => Post)
-  post: Post;
+  @ManyToOne(() => Post, { onDelete: 'CASCADE' })
+  post: Post
 
-  @ManyToOne(() => Comment)
-  comment: Comment;
+  @ManyToOne(() => Comment, { onDelete: 'CASCADE' })
+  comment: Comment
 }

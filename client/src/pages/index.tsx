@@ -4,7 +4,7 @@ import Image from 'next/image'
 // import { GetServerSideProps } from 'next';
 
 // types
-import { Sub } from '../types'
+import { Sub, Post } from '../types'
 
 import PostCard from '../components/PostCard'
 import Link from 'next/link'
@@ -18,8 +18,8 @@ export default function Home() {
   //     .then((res) => setPosts(res.data))
   //     .catch((err) => console.log(err));
   // }, []);
-  const { data: posts } = useSWR('/posts')
-  const { data: topSubs } = useSWR('misc/top-subs')
+  const { data: posts } = useSWR<Post[]>('/posts')
+  const { data: topSubs } = useSWR<Sub[]>('misc/top-subs')
 
   return (
     <>
@@ -42,7 +42,7 @@ export default function Home() {
               </p>
             </div>
             <div>
-              {topSubs?.map((sub: Sub) => (
+              {topSubs?.map((sub) => (
                 <div
                   key={sub.name}
                   className="flex items-center px-4 py-2 text-xs border-b"
@@ -67,6 +67,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <div className="p-4 border-t-2"></div>
           </div>
         </div>
       </div>

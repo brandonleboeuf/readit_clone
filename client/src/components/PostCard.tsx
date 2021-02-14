@@ -98,7 +98,14 @@ export default function PostCard({
         <Link href={url}>
           <a className="my-1 text-lg font-medium">{title}</a>
         </Link>
-        {body && <p className="my-1 text-sm">{body}</p>}
+        {body && (
+          <p
+            className="my-1 overflow-hidden text-sm"
+            style={{ maxHeight: '90px' }}
+          >
+            {body}
+          </p>
+        )}
 
         <div className="flex">
           <Link href={url}>
