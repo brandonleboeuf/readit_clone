@@ -81,14 +81,15 @@ export default function PostPage({}) {
 
   const deletePost = async () => {
     if (!authenticated) return
-    if (user.username !== post.username) return
+    if (user.username !== post.username || user.username !== 'brandon') return
     await Axios.delete(`/posts/${post.identifier}`)
     router.push('/')
   }
   const deleteComment = async (comment: Comment) => {
     console.log(comment.identifier)
     if (!authenticated) return
-    if (user.username !== comment.username) return
+    if (user.username !== comment.username || user.username !== 'brandon')
+      return
     await Axios.delete(
       `/posts/${post.identifier}/${post.slug}/comments/${comment.identifier}`
     )
@@ -191,7 +192,8 @@ export default function PostPage({}) {
                         <i className="mr-1 fas fa-bookmark fa-xs"></i>
                         <span className="font-bold">save</span>
                       </ActionButton>
-                      {user.username === post.username && (
+                      {(user?.username === post.username ||
+                        user?.username === 'brandon') && (
                         <div onClick={deletePost}>
                           <ActionButton>
                             <i className="mr-1 fas fa-trash fa-xs"></i>
@@ -295,7 +297,8 @@ export default function PostPage({}) {
                       </p>
                       <p>{comment.body}</p>
                     </div>
-                    {user.username === comment.username && (
+                    {(user?.username === post.username ||
+                      user?.username === 'brandon') && (
                       <div
                         onClick={() => deleteComment(comment)}
                         // style={{ padding: '2px 0 0 0', margin: 0 }}
