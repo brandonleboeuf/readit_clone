@@ -25,6 +25,7 @@ export default function PostCard({
     commentCount,
     url,
     username,
+    sub,
   },
 }: PostCardProps) {
   const vote = async (value: number) => {
@@ -70,12 +71,15 @@ export default function PostCard({
       {/* Post data section  */}
       <div className="w-full p-2">
         <div className="flex items-center">
-          <Link href={`/r/${subName}`}>
-            <img
-              src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-              className="w-6 h-6 mr-1 rounded-full cursor-pointer"
-            />
-          </Link>
+          {sub ? (
+            <Link href={`/r/${subName}`}>
+              <img
+                src={sub.imageUrl}
+                // src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                className="w-6 h-6 mr-1 rounded-full cursor-pointer"
+              />
+            </Link>
+          ) : null}
           <Link href={`/r/${subName}`}>
             <a className="text-xs font-bold cursor-pointer hover:underline">
               /r/{subName}

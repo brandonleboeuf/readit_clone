@@ -44,11 +44,11 @@ export default class Post extends Entity {
   @Column()
   username: string
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'username', referencedColumnName: 'username' })
   user: User
 
-  @ManyToOne(() => Sub, (sub) => sub.posts)
+  @ManyToOne(() => Sub, (sub) => sub.posts, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'subName', referencedColumnName: 'name' })
   sub: Sub
 

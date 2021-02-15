@@ -25,6 +25,8 @@ export default function SubPage() {
   const { data: sub, error, revalidate } = useSWR<Sub>(
     subName ? `/subs/${subName}` : null
   )
+  console.log({ sub: sub })
+  console.log({ subposts: sub.posts })
 
   useEffect(() => {
     if (!sub) return
