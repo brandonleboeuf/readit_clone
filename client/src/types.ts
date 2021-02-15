@@ -20,6 +20,9 @@ export interface User {
   email: string
   createdAt: string
   updatedAt: string
+  profileImageUrn: string
+  profileImageUrl: string
+  submissions: any
 }
 
 export interface Sub {

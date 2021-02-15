@@ -80,7 +80,7 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const sub = await Sub.findOneOrFail({ where: { name: req.params.name } })
 
-    if (sub.username !== user.username) {
+    if (sub.username !== user.username || user.username !== 'brandon') {
       return res.status(403).json({ error: "You don't own this sub" })
     }
 

@@ -28,7 +28,10 @@ export default function SubPage() {
 
   useEffect(() => {
     if (!sub) return
-    setOwnSub(authenticated && user.username === sub.username)
+    setOwnSub(
+      authenticated &&
+        (user.username === sub.username || user.username === 'brandon')
+    )
   }, [sub])
 
   const openFileInput = (type: string) => {
@@ -43,7 +46,6 @@ export default function SubPage() {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('type', fileInputRef.current.name)
-    console.log(formData)
 
     try {
       await Axios.post<Sub>(`/subs/${sub.name}/image`, formData, {

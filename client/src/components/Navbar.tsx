@@ -15,7 +15,7 @@ const Navbar = () => {
   const [subs, setSubs] = useState<Sub[]>([])
   const [timer, setTimer] = useState(null)
 
-  const { authenticated, loading } = useAuthState()
+  const { authenticated, loading, user } = useAuthState()
   const dispatch = useAuthDispatch()
 
   const router = useRouter()
@@ -114,12 +114,15 @@ const Navbar = () => {
         {!loading &&
           (authenticated ? (
             // Show logout button
-            <button
-              className="w-32 py-1 mr-5 leading-5 hollow blue button"
-              onClick={logout}
-            >
-              Log Out
-            </button>
+            <>
+              <p className="pt-2 pr-2 text-xs font-semibold">{user.username}</p>
+              <button
+                className="w-32 py-1 mr-5 leading-5 hollow blue button"
+                onClick={logout}
+              >
+                Log Out
+              </button>
+            </>
           ) : (
             <>
               <Link href="/login">

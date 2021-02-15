@@ -86,7 +86,6 @@ export default function PostPage({}) {
     router.push('/')
   }
   const deleteComment = async (comment: Comment) => {
-    console.log(comment.identifier)
     if (!authenticated) return
     if (user.username !== comment.username || user.username !== 'brandon')
       return
