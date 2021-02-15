@@ -6,6 +6,8 @@ import Axios from 'axios'
 
 import { Post } from '../types'
 import ActionButton from './ActionButton'
+import { useAuthState } from '../context/auth'
+import { useRouter } from 'next/router'
 
 dayjs.extend(relativeTime)
 interface PostCardProps {
@@ -28,7 +30,13 @@ export default function PostCard({
     sub,
   },
 }: PostCardProps) {
+  const { authenticated } = useAuthState()
+  const router = useRouter()
+
   const vote = async (value: number) => {
+    // If not logged in, send to log in page
+    if (!authenticated) router.push('/login')
+
     try {
       const res = await Axios.post('/misc/vote', {
         identifier,
