@@ -12,13 +12,15 @@ import { Post, Comment } from '../../../../types'
 import Sidebar from '../../../../components/Sidebar'
 import { useAuthState } from '../../../../context/auth'
 import ActionButton from '../../../../components/ActionButton'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
 dayjs.extend(relativeTime)
 
 export default function PostPage({}) {
   // Local State
   const [newComment, setNewComment] = useState('')
+  const [description, setDescription] = useState('')
+
   // Global State
   const { authenticated, user } = useAuthState()
 
@@ -37,6 +39,13 @@ export default function PostPage({}) {
   )
 
   if (error) router.push('/')
+
+  useEffect(() => {
+    if (!post) return
+    let desc = post.body || post.title
+    desc = desc.substring(0, 158).concat('..')
+    setDescription(desc)
+  }, [post])
 
   const vote = async (value: number, comment?: Comment) => {
     // If not logged in, send to log in page
@@ -100,6 +109,11 @@ export default function PostPage({}) {
     <>
       <Head>
         <title>{post?.title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:title" content={post?.title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:title" content={post?.title} />
       </Head>
       <Link href={`/r/${sub}`}>
         <a>

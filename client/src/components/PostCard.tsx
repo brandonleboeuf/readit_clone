@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 dayjs.extend(relativeTime)
 interface PostCardProps {
   post: Post
-  callback?: () => void
+  revalidate?: () => void
 }
 
 export default function PostCard({
@@ -30,7 +30,7 @@ export default function PostCard({
     username,
     sub,
   },
-  callback,
+  revalidate,
 }: PostCardProps) {
   const { authenticated } = useAuthState()
   const router = useRouter()
@@ -49,7 +49,7 @@ export default function PostCard({
         value,
       })
       // revalidates when user votes
-      if (callback) callback()
+      if (revalidate) revalidate()
     } catch (err) {
       console.log(err)
     }
@@ -91,21 +91,23 @@ export default function PostCard({
       <div className="w-full p-2">
         <div className="flex items-center">
           {sub ? (
-            <Link href={`/r/${subName}`}>
-              <img
-                src={sub.imageUrl}
-                // src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-                className="w-6 h-6 mr-1 rounded-full cursor-pointer"
-              />
-            </Link>
+            <>
+              <Link href={`/r/${subName}`}>
+                <img
+                  src={sub.imageUrl}
+                  // src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                  className="w-6 h-6 mr-1 rounded-full cursor-pointer"
+                />
+              </Link>
+              <Link href={`/r/${subName}`}>
+                <a className="text-xs font-bold cursor-pointer hover:underline">
+                  /r/{subName}
+                </a>
+              </Link>
+              <span className="mx-1 text-xs text-gray-500">•</span>
+            </>
           ) : null}
-          <Link href={`/r/${subName}`}>
-            <a className="text-xs font-bold cursor-pointer hover:underline">
-              /r/{subName}
-            </a>
-          </Link>
           <p className="text-xs text-gray-500">
-            <span className="mx-1">•</span>
             Posted by
             <Link href={`/u/${username}`}>
               <a className="mx-1 hover:underline">/u/{username}</a>

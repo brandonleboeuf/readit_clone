@@ -24,6 +24,11 @@ export default function Home() {
 
   const { data: topSubs } = useSWR<Sub[]>('misc/top-subs')
 
+  const description =
+    "Readit is a network of people who communities based on people's interests. Find communities you're interested in, and become a part of an online community!"
+
+  const title = 'Readit: home to the net'
+
   const { authenticated } = useAuthState()
 
   const {
@@ -34,7 +39,9 @@ export default function Home() {
     setSize: setPage,
     isValidating,
     revalidate,
-  } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`)
+  } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`, {
+    revalidateAll: true,
+  })
 
   const posts: Post[] = data ? [].concat(...data) : []
 
@@ -68,14 +75,23 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Readit: home to the net</title>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:title" content={title} />
       </Head>
       <div className="container flex pt-4">
         {/* POST FEED  */}
         <div className="w-full px-4 md:w-160 md:px-0">
-          {isValidating && <p className="text-lg text-center">Loading ..</p>}
+          {!data && !error && <p className="text-lg text-center">Loading ..</p>}
           {posts?.map((post) => (
-            <PostCard post={post} key={post.identifier} callback={revalidate} />
+            <PostCard
+              post={post}
+              key={post.identifier}
+              revalidate={revalidate}
+            />
           ))}
           {isValidating && posts.length > 0 && (
             <p className="text-lg text-center">Loading More..</p>
