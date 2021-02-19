@@ -10,7 +10,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     // Strict stuff
-    // "strict": ture, // this is the same as having the below 5 options set to true
+    // "strict": true, // this is the same as having the below 5 options set to true
     "noImplicitAny": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
