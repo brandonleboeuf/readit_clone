@@ -80,15 +80,20 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const sub = await Sub.findOneOrFail({ where: { name: req.params.name } })
 
-    if (sub.username !== user.username || user.username !== 'brandon') {
-      return res.status(403).json({ error: "You don't own this sub" })
+    if (user.username !== 'brandon') {
+      if (sub.username !== user.username) {
+        console.log({ USERNAME: user.username })
+        console.log({ subUSERNAME: sub.username })
+        return res.status(403).json({ error: "You don't own this sub" })
+      }
     }
 
     res.locals.sub = sub
     return next()
   } catch (err) {
     console.log(err)
-    return res.status(500).json({ error: 'something went wrong' })
+    console.log({ username: user.username })
+    return res.status(500).json({ error: user.username })
   }
 }
 

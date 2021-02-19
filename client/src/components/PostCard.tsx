@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 dayjs.extend(relativeTime)
 interface PostCardProps {
   post: Post
+  callback?: () => void
 }
 
 export default function PostCard({
@@ -29,6 +30,7 @@ export default function PostCard({
     username,
     sub,
   },
+  callback,
 }: PostCardProps) {
   const { authenticated } = useAuthState()
   const router = useRouter()
@@ -37,24 +39,33 @@ export default function PostCard({
     // If not logged in, send to log in page
     if (!authenticated) router.push('/login')
 
+    // allows user to remove vote selection
+    if (value === userVote) value = 0
+
     try {
       const res = await Axios.post('/misc/vote', {
         identifier,
         slug,
         value,
       })
+      // revalidates when user votes
+      if (callback) callback()
     } catch (err) {
       console.log(err)
     }
   }
 
   return (
-    <div key={identifier} className="flex mb-4 bg-white rounded">
+    <div
+      key={identifier}
+      className="flex mb-4 bg-white rounded"
+      id={identifier}
+    >
       {/* Vote section  */}
       <div className="w-10 py-3 text-center bg-gray-200 rounded-l">
         {/* Upvote */}
         <div
-          className="w-6 mx-auto text-gray-400 rounded curser-pointer hover:bg-gray-300 hover:text-red-500"
+          className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
           onClick={() => vote(1)}
         >
           <i
@@ -66,7 +77,7 @@ export default function PostCard({
         <p className="text-xs font-bold">{voteScore}</p>
         {/* Downvote */}
         <div
-          className="w-6 mx-auto text-gray-400 rounded curser-pointer hover:bg-gray-300 hover:text-blue-600"
+          className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600"
           onClick={() => vote(-1)}
         >
           <i

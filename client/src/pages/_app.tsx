@@ -1,32 +1,32 @@
-import { AppProps } from 'next/app';
-import Axios from 'axios';
-import { useRouter } from 'next/router';
-import { SWRConfig } from 'swr';
+import { AppProps } from 'next/app'
+import Axios from 'axios'
+import { useRouter } from 'next/router'
+import { SWRConfig } from 'swr'
 
-import { AuthProvider } from '../context/auth';
+import { AuthProvider } from '../context/auth'
 
-import '../styles/tailwind.css';
-import '../styles/icons.css';
+import '../styles/tailwind.css'
+import '../styles/icons.css'
 
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar'
 
-Axios.defaults.baseURL = 'http://localhost:5000/api';
-Axios.defaults.withCredentials = true;
+Axios.defaults.baseURL = 'http://localhost:5000/api'
+Axios.defaults.withCredentials = true
 
 const fetcher = async (url: string) => {
   try {
-    const res = await Axios.get(url);
-    return res.data;
+    const res = await Axios.get(url)
+    return res.data
   } catch (err) {
-    console.log(err);
-    throw err.response.data;
+    console.log(err)
+    throw err.response.data
   }
-};
+}
 
 function App({ Component, pageProps }: AppProps) {
-  const { pathname } = useRouter();
-  const authRoutes = ['/register', '/login'];
-  const authRoute = authRoutes.includes(pathname);
+  const { pathname } = useRouter()
+  const authRoutes = ['/register', '/login']
+  const authRoute = authRoutes.includes(pathname)
 
   return (
     <SWRConfig
@@ -41,7 +41,7 @@ function App({ Component, pageProps }: AppProps) {
         </div>
       </AuthProvider>
     </SWRConfig>
-  );
+  )
 }
 
-export default App;
+export default App

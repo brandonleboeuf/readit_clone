@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import useSWR from 'swr'
+import useSWR, { useSWRInfinite } from 'swr'
+import Link from 'next/link'
 import Image from 'next/image'
 // import { GetServerSideProps } from 'next';
 
@@ -7,7 +9,7 @@ import Image from 'next/image'
 import { Sub, Post } from '../types'
 
 import PostCard from '../components/PostCard'
-import Link from 'next/link'
+import { useAuthState } from '../context/auth'
 
 export default function Home() {
   // WITHOUT USING SWR
@@ -18,8 +20,50 @@ export default function Home() {
   //     .then((res) => setPosts(res.data))
   //     .catch((err) => console.log(err));
   // }, []);
-  const { data: posts } = useSWR<Post[]>('/posts')
+  const [observedPost, setObservedPost] = useState('')
+
   const { data: topSubs } = useSWR<Sub[]>('misc/top-subs')
+
+  const { authenticated } = useAuthState()
+
+  const {
+    data,
+    error,
+    mutate,
+    size: page,
+    setSize: setPage,
+    isValidating,
+    revalidate,
+  } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`)
+
+  const posts: Post[] = data ? [].concat(...data) : []
+
+  useEffect(() => {
+    if (!posts || posts.length === 0) return
+
+    const id = posts[posts.length - 1].identifier
+
+    if (id !== observedPost) {
+      console.log('Reached bottom of tracked post')
+      setObservedPost(id)
+      observeElement(document.getElementById(id))
+    }
+  }, [posts])
+
+  const observeElement = (element: HTMLElement) => {
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting === true) {
+          setPage(page + 1)
+          observer.unobserve(element)
+        }
+      },
+      { threshold: 1 }
+    )
+    observer.observe(element)
+  }
 
   return (
     <>
@@ -28,13 +72,17 @@ export default function Home() {
       </Head>
       <div className="container flex pt-4">
         {/* POST FEED  */}
-        <div className="w-160">
+        <div className="w-full px-4 md:w-160 md:px-0">
+          {isValidating && <p className="text-lg text-center">Loading ..</p>}
           {posts?.map((post) => (
-            <PostCard post={post} key={post.identifier} />
+            <PostCard post={post} key={post.identifier} callback={revalidate} />
           ))}
+          {isValidating && posts.length > 0 && (
+            <p className="text-lg text-center">Loading More..</p>
+          )}
         </div>
         {/* SIDEBAR */}
-        <div className="ml-6 w-80">
+        <div className="hidden ml-6 md:block w-80">
           <div className="bg-white rounded">
             <div className="p-4 border-b-2">
               <p className="text-lg font-semibold text-center">
@@ -67,7 +115,15 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="p-4 border-t-2"></div>
+            {authenticated && (
+              <div className="p-4 border-t-2">
+                <Link href="/subs/create">
+                  <a className="w-full px-2 py-1 blue button">
+                    Create Community
+                  </a>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

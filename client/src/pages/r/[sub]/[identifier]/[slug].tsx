@@ -28,7 +28,7 @@ export default function PostPage({}) {
 
   const { identifier, sub, slug } = router.query
 
-  const { data: post, error } = useSWR<Post>(
+  const { data: post, error, revalidate: revaltwo } = useSWR<Post>(
     identifier && slug ? `/posts/${identifier}/${slug}` : null
   )
 
@@ -57,6 +57,7 @@ export default function PostPage({}) {
         value,
       })
       revalidate()
+      revaltwo()
     } catch (err) {
       console.log(err)
     }
