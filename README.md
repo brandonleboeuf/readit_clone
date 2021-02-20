@@ -1,5 +1,5 @@
 # READIT clone
-
+postgres and client running on digital ocean.com
 ## Utilizing
 
 - Next.js
