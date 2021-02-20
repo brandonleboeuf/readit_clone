@@ -36,7 +36,8 @@ const register = async (req: Request, res: Response) => {
     }
 
     // Create user
-    const user = new User({ email, username, password })
+    const profileImageUrn = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+    const user = new User({ email, username, password, profileImageUrn })
 
     errors = await validate(user)
     if (errors.length > 0) {
@@ -49,6 +50,7 @@ const register = async (req: Request, res: Response) => {
     return res.json(user)
   } catch (err) {
     console.log(err)
+    console.log("Hello Brandon")
     return res.status(500).json(err)
   }
 }
