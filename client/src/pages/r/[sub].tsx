@@ -69,7 +69,7 @@ export default function SubPage() {
     postsMarkup = <p className="text-lg text-center">No posts submitted yet</p>
   } else {
     postsMarkup = sub.posts.sort(function (a, b) {
-      return a.voteScore - b.voteScore
+      return b.voteScore - a.voteScore
     }).map((post) => (
       <PostCard key={post.identifier} post={post} revalidate={revalidate} />
     ))
