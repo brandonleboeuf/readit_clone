@@ -53,7 +53,7 @@ export default function Register() {
       </Head>
       <div
         className="h-screen bg-center bg-cover w-36"
-        style={{ backgroundImage: "url('/images/karsten-winegeart.jpg')" }}
+        style={{ backgroundImage: `url('${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/images/karsten-winegeart.jpg')` }}
       ></div>
       <div className="flex flex-col justify-center pl-6">
         <div className="w-72">
