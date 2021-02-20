@@ -120,12 +120,14 @@ export default function PostPage({}) {
           <div className="flex items-center h-20 p-8 bg-blue-500 width-full">
             <div className="container flex">
               {post && (
-                <div className="w-8 h-8 mr-2 overflow-hidden rounded-full">
-                  <Image
-                    src={post.sub.imageUrl}
-                    height={(8 * 16) / 4}
-                    width={(8 * 16) / 4}
-                  />
+                <div className="w-8 h-8 mr-2 overflow-hidden rounded-full"
+                  style={{
+                    backgroundImage: `url(${post.sub?.bannerUrl})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
                 </div>
               )}
               <p className="text-xl font-semibold text-white">/r/{sub}</p>
