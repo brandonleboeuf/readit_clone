@@ -92,7 +92,7 @@ export default function SubPage() {
           <div>
             {/* Banner image */}
             <div
-              className={classNames('bg-blue-500', {
+              className={classNames('cursor-default', {
                 'cursor-pointer': ownSub,
               })}
               onClick={() => openFileInput('banner')}
