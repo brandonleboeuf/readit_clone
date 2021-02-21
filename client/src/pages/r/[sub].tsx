@@ -103,7 +103,7 @@ export default function SubPage() {
                   style={{
                     backgroundImage: `url(${sub.bannerUrl})`,
                     backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'contain',
+                    backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 ></div>
