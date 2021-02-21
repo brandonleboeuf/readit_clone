@@ -99,11 +99,11 @@ export default function SubPage() {
             >
               {sub.bannerUrl ? (
                 <div
-                  className="h-56 bg-blue-500"
+                  className="h-56"
                   style={{
                     backgroundImage: `url(${sub.bannerUrl})`,
                     backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
+                    backgroundSize: 'contain',
                     backgroundPosition: 'center',
                   }}
                 ></div>
