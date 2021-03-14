@@ -8,32 +8,39 @@ postgres and client running on digital ocean.com
 - Express
 - typeORM
 
-### Steps to setup this project:
+## Steps to setup this project locally:
 
-1. Run `npm i` command
-2. Setup database settings inside `example.ormconfig.json` file
-3. Rename `example.ormconfig.json` to `ormconfig.json`
-4. Run `npm start` command
+1. Run `npm i` 
+2. Setup database settings inside "example.ormconfig.json" file
+3. Rename "example.ormconfig.json" to "ormconfig.json"
+4. Run `npm run dev` 
+5. Run `cd client/ & npm i && npm run dev`
 
-## To run:
 
-npm run dev
-check routes in Postman:
+## Setup database (in docker)
+### Install postgres image for docker
+`docker pull postgres`
 
-- post http://localhost:5000/api/auth/register
+### Builds container using postgress
+`docker run --name postgres-docker -e POSTGRES_PASSWORD=root -d -p 4321:5432 postgres`
 
-  {
-  "uesrname": ,
-  "user": ,
-  "password":
-  }
+<!-- ### TO ACCESS: connects to new container 
+`docker exec -it postgres-docker psql -U postgres -->
 
-- post http://localhost:5000/api/auth/login
+### Replace ".env.example" content with:
+PORT=5000
+NODE_ENV=development
+APP_URL=http://localhost:5000
+ORIGIN=http://localhost:3000
 
-  {
-  "username": ,
-  "password":
-  }
+JWT_SECRET=4hjkf45088756ds7ftg45jkh0
 
-- get http://localhost:5000/api/auth/me
-- get http://localhost:5000/api/auth/logout
+DB_DIALECT=postgres
+DB_PORT=4321
+DB_HOST=localhost
+DB_USERNAME=postgres
+DB_PASSWORD=root
+DB_DATABASE=postgres
+
+### Rename:
+".env.example" to ".env" 
